@@ -1,0 +1,56 @@
+# One command per task, all on the same image:
+#   docker compose run --rm experiments    # full pipeline -> ./results/metrics.json (~2 min)
+#   docker compose run --rm test           # unit tests
+#   docker compose run --rm validate       # 25 checks against the original C++ outputs
+#   docker compose run --rm plot           # redraw ./results/f1_summary.png from metrics.json
+#   docker compose up api                  # HTTP API on http://localhost:8000/docs
+#   docker compose run --rm test && docker compose run --rm validate
+#
+# Files written to ./results belong to your user: UID/GID are passed from the shell.
+#   export UID GID=$(id -g)   (bash; `UID` is already set in bash but not exported)
+
+x-build: &build
+  context: .
+  args:
+    UID: ${UID:-1000}
+    GID: ${GID:-1000}
+
+services:
+  experiments:
+    image: airquality:latest
+    build:
+      <<: *build
+      target: runtime
+    volumes:
+      - ./results:/app/results
+
+  test:
+    image: airquality:dev
+    build:
+      <<: *build
+      target: dev
+    command: pytest -q
+
+  validate:
+    image: airquality:dev
+    build:
+      <<: *build
+      target: dev
+    command: python validation/compare_with_cpp.py
+
+  plot:
+    image: airquality:dev
+    build:
+      <<: *build
+      target: dev
+    command: python scripts/plot_results.py
+    volumes:
+      - ./results:/app/results
+
+  api:
+    image: airquality:api
+    build:
+      <<: *build
+      target: api
+    ports:
+      - "8000:8000"

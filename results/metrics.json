@@ -1,0 +1,380 @@
+{
+  "n_rows": 53635,
+  "n_rows_clean": 53335,
+  "cpp_replica": {
+    "correlation": {
+      "lat": {
+        "lat": 1.0,
+        "lon": -0.13153625563301907,
+        "value": 0.005876680529137745
+      },
+      "lon": {
+        "lat": -0.13153625563301907,
+        "lon": 1.0,
+        "value": -0.00045646723985056883
+      },
+      "value": {
+        "lat": 0.005876680529137745,
+        "lon": -0.00045646723985056883,
+        "value": 1.0
+      }
+    },
+    "kmeans": {
+      "inertia": 3709.103697199989,
+      "cluster_sizes": [
+        11074,
+        11818,
+        9030,
+        8937,
+        12776
+      ]
+    },
+    "rules": [
+      {
+        "antecedent": "lat=high",
+        "consequent": "lon=medium",
+        "support": 0.3762468537335695,
+        "confidence": 0.4642922878704215,
+        "lift": 1.1258337564957757
+      },
+      {
+        "antecedent": "lon=low",
+        "consequent": "value=low",
+        "support": 0.17016873310338398,
+        "confidence": 1.0,
+        "lift": 1.000167829038153
+      },
+      {
+        "antecedent": "lon=high",
+        "consequent": "value=low",
+        "support": 0.41743264659271,
+        "confidence": 1.0,
+        "lift": 1.000167829038153
+      },
+      {
+        "antecedent": "lat=medium",
+        "consequent": "value=low",
+        "support": 0.13921879369814485,
+        "confidence": 1.0,
+        "lift": 1.000167829038153
+      },
+      {
+        "antecedent": "lat=high",
+        "consequent": "value=low",
+        "support": 0.8101985643702806,
+        "confidence": 0.9997929320817228,
+        "lift": 0.9999607263678664
+      },
+      {
+        "antecedent": "lon=medium",
+        "consequent": "value=low",
+        "support": 0.4122308194276126,
+        "confidence": 0.9995931099959312,
+        "lift": 0.9997608707461262
+      },
+      {
+        "antecedent": "lat=high",
+        "consequent": "lon=low",
+        "support": 0.12818122494639694,
+        "confidence": 0.15817688201730168,
+        "lift": 0.9295296446803962
+      },
+      {
+        "antecedent": "lat=high",
+        "consequent": "lon=high",
+        "support": 0.3059382865666076,
+        "confidence": 0.37753083011227684,
+        "lift": 0.9044113659865096
+      }
+    ]
+  },
+  "classification": {
+    "cpp_replica_leaky": {
+      "features": [
+        "lat",
+        "lon",
+        "value",
+        "location_idx",
+        "pollutant_idx"
+      ],
+      "positive_rate": 0.34997669432273704,
+      "n_train": 42908,
+      "n_test": 10727,
+      "models": {
+        "logreg_sgd_as_cpp": {
+          "precision": 0.5467756584922797,
+          "recall": 0.7859007832898173,
+          "f1": 0.6448848419925013,
+          "roc_auc": 0.754049912343165
+        },
+        "logreg_lbfgs": {
+          "precision": 0.9976556394894504,
+          "recall": 1.0,
+          "f1": 0.9988264441257009,
+          "roc_auc": 0.9999983343119251
+        }
+      }
+    },
+    "no_leakage_cpp_setup": {
+      "features": [
+        "lat",
+        "lon",
+        "location_idx",
+        "pollutant_idx"
+      ],
+      "positive_rate": 0.34997669432273704,
+      "n_train": 42908,
+      "n_test": 10727,
+      "models": {
+        "logreg_sgd_as_cpp": {
+          "precision": 0.5465770837116397,
+          "recall": 0.7859007832898173,
+          "f1": 0.6447467066509586,
+          "roc_auc": 0.7532062034766696
+        },
+        "logreg_lbfgs": {
+          "precision": 0.678314121037464,
+          "recall": 0.491644908616188,
+          "f1": 0.5700877989706328,
+          "roc_auc": 0.7532672282306873
+        }
+      }
+    },
+    "no_leakage_clean": {
+      "features": [
+        "lat",
+        "lon",
+        "pollutant",
+        "country"
+      ],
+      "positive_rate": 0.3499953126464798,
+      "n_train": 42668,
+      "n_test": 10667,
+      "models": {
+        "logreg": {
+          "precision": 0.7288271440021373,
+          "recall": 0.7307795338869542,
+          "f1": 0.7298020331728197,
+          "roc_auc": 0.8884300106835634
+        },
+        "hist_gradient_boosting": {
+          "precision": 0.8551980198019802,
+          "recall": 0.7404232520760782,
+          "f1": 0.7936826992103374,
+          "roc_auc": 0.9420570638427712
+        }
+      }
+    },
+    "per_pollutant_label": {
+      "features": [
+        "lat",
+        "lon",
+        "pollutant",
+        "country"
+      ],
+      "positive_rate": 0.3419330645917315,
+      "n_train": 42668,
+      "n_test": 10667,
+      "models": {
+        "logreg": {
+          "precision": 0.5872206977655822,
+          "recall": 0.4107485604606526,
+          "f1": 0.4833817360438851,
+          "roc_auc": 0.7092615442423504
+        },
+        "hist_gradient_boosting": {
+          "precision": 0.7409823484267076,
+          "recall": 0.5294762818755141,
+          "f1": 0.6176235407004638,
+          "roc_auc": 0.823028118181669
+        }
+      }
+    }
+  },
+  "robustness": {
+    "global": {
+      "cv_random": {
+        "features": [
+          "lat",
+          "lon",
+          "pollutant",
+          "country"
+        ],
+        "cv": "5-fold, random",
+        "models": {
+          "logreg": {
+            "precision": 0.7298097251585624,
+            "recall": 0.7397010767664863,
+            "f1": 0.7347221113682922,
+            "roc_auc": 0.8900962881794457
+          },
+          "hist_gradient_boosting": {
+            "precision": 0.8518853150222865,
+            "recall": 0.7576471848716987,
+            "f1": 0.8020074286200346,
+            "roc_auc": 0.9426674262214165
+          }
+        }
+      },
+      "baseline_pollutant_unit_only": {
+        "features": [
+          "pollutant",
+          "unit"
+        ],
+        "cv": "5-fold, random",
+        "models": {
+          "logreg": {
+            "precision": 0.7476135710178263,
+            "recall": 0.696469705898109,
+            "f1": 0.7211359791441329,
+            "roc_auc": 0.8881908618380071
+          },
+          "hist_gradient_boosting": {
+            "precision": 0.7476135710178263,
+            "recall": 0.696469705898109,
+            "f1": 0.7211359791441329,
+            "roc_auc": 0.8882579887236721
+          }
+        }
+      },
+      "cv_by_station": {
+        "features": [
+          "lat",
+          "lon",
+          "pollutant",
+          "country"
+        ],
+        "cv": "5-fold, by_station",
+        "models": {
+          "logreg": {
+            "precision": 0.726861590239798,
+            "recall": 0.7404510633738683,
+            "f1": 0.7335933975532734,
+            "roc_auc": 0.8900555455392927
+          },
+          "hist_gradient_boosting": {
+            "precision": 0.8549288926704752,
+            "recall": 0.7535758290030535,
+            "f1": 0.8010591953532075,
+            "roc_auc": 0.9420464480592119
+          }
+        }
+      },
+      "cv_by_country": {
+        "features": [
+          "lat",
+          "lon",
+          "pollutant",
+          "country"
+        ],
+        "cv": "5-fold, by_country",
+        "models": {
+          "logreg": {
+            "precision": 0.6570834261941906,
+            "recall": 0.4738308244495634,
+            "f1": 0.5506100597609562,
+            "roc_auc": 0.7555657044001878
+          },
+          "hist_gradient_boosting": {
+            "precision": 0.6091661362189688,
+            "recall": 0.4614024749558044,
+            "f1": 0.5250868743522527,
+            "roc_auc": 0.7112526157790202
+          }
+        }
+      }
+    },
+    "per_pollutant": {
+      "cv_random": {
+        "features": [
+          "lat",
+          "lon",
+          "pollutant",
+          "country"
+        ],
+        "cv": "5-fold, random",
+        "models": {
+          "logreg": {
+            "precision": 0.591760596920146,
+            "recall": 0.40878433952952786,
+            "f1": 0.48354143019296253,
+            "roc_auc": 0.709514067962887
+          },
+          "hist_gradient_boosting": {
+            "precision": 0.7417405634465981,
+            "recall": 0.518286998958162,
+            "f1": 0.6102001291155584,
+            "roc_auc": 0.8243664189794266
+          }
+        }
+      },
+      "baseline_pollutant_unit_only": {
+        "features": [
+          "pollutant",
+          "unit"
+        ],
+        "cv": "5-fold, random",
+        "models": {
+          "logreg": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "roc_auc": 0.5071202953540535
+          },
+          "hist_gradient_boosting": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "roc_auc": 0.5043221915679315
+          }
+        }
+      },
+      "cv_by_station": {
+        "features": [
+          "lat",
+          "lon",
+          "pollutant",
+          "country"
+        ],
+        "cv": "5-fold, by_station",
+        "models": {
+          "logreg": {
+            "precision": 0.5880959898958005,
+            "recall": 0.4085101716291057,
+            "f1": 0.48212263387801324,
+            "roc_auc": 0.7086442367484206
+          },
+          "hist_gradient_boosting": {
+            "precision": 0.7345194623572372,
+            "recall": 0.5183966661183309,
+            "f1": 0.6078179246496078,
+            "roc_auc": 0.8201624583151602
+          }
+        }
+      },
+      "cv_by_country": {
+        "features": [
+          "lat",
+          "lon",
+          "pollutant",
+          "country"
+        ],
+        "cv": "5-fold, by_country",
+        "models": {
+          "logreg": {
+            "precision": 0.22335659964579643,
+            "recall": 0.11756319570104733,
+            "f1": 0.15404512142549218,
+            "roc_auc": 0.45089826474887934
+          },
+          "hist_gradient_boosting": {
+            "precision": 0.4701120797011208,
+            "recall": 0.20699676481877502,
+            "f1": 0.28743290059770815,
+            "roc_auc": 0.5897930963638411
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,51 @@
+name: tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements-dev.txt
+      - name: Unit tests
+        run: pytest -q
+      - name: Validation against the C++ implementation
+        run: python validation/compare_with_cpp.py
+
+  docker:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+      - name: Build the dev image and run tests and validation inside it
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          target: dev
+          load: true
+          tags: airquality:dev
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+      - run: docker run --rm airquality:dev pytest -q
+      - run: docker run --rm airquality:dev python validation/compare_with_cpp.py
+      - name: Build the runtime image and check it starts
+        run: |
+          docker build -t airquality .
+          docker run --rm airquality python -m airquality --help
+      - name: Build the API image and call it
+        run: |
+          docker build --target api -t airquality:api .
+          docker run -d --name api -p 8000:8000 airquality:api
+          for i in $(seq 1 30); do curl -sf localhost:8000/health && break || sleep 2; done
+          curl -sf localhost:8000/health
+          curl -sf -X POST localhost:8000/predict -H 'content-type: application/json' \
+            -d '{"country":"ES","pollutant":"NO2","lat":40.4,"lon":-3.7}'
+          docker logs api
